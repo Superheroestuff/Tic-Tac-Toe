@@ -25,6 +25,14 @@ public:
                 table[i][j] = '*';
 
     }
+
+    char getCell(int i, int j){
+        return table[i][j];
+    }
+
+    void setCell(int i, int j, char c){
+        table[i][j] = c;
+    }
     bool isFull()
     {
         for(int i = 0; i<N; i++)
@@ -47,7 +55,78 @@ public:
             cout<<endl;
         }
     }
+    int winnerValue(char v){
+        switch(v){
+            case 'x': return 1;
+            break;
+            case 'o': return -1;
+            break;
+            default: return 0;
+        }
+    }
 
+    int checkForWinner(){
+        char element;
+        bool win;
+        //check rows
+        for(int i = 0; i<N; i++){
+            element = table[i][0];
+            if(element == '*') continue;
+            win = true;
+
+            for(int j = 0; j<N;j++){
+                if(table[i][j] != element){
+                    win = false;
+                    break;
+                }
+            }
+            if(win) return winnerValue(element);
+        }
+        //check columns
+        for(int i = 0; i<N; i++){
+            element = table[0][i];
+            if(element == '*') continue;
+            bool win = true;
+
+            for(int j = 0; j<N;j++){
+                if(table[j][i] != element){
+                    win = false;
+                    break;
+                }
+            }
+            if(win) return winnerValue(element);
+        }
+
+        //check main diagonal
+        element = table[0][0];
+        win = true;
+        for(int i = 0; i<N; i++){
+            if(table[i][i]!=element){
+                win = false;
+                break;
+            }
+        }
+        if(win) return winnerValue(element);
+
+        //check minor diagonal
+        element = table[0][N-1];
+        win = true;
+        for(int i = 0; i<N; i++){
+            if(table[i][N-i-1]!=element){
+                 win = false;
+                break;
+            }
+        }
+        if(win) return winnerValue(element);
+
+        return 0;
+    }
+
+    void init(){
+        for(int i = 0; i<N;i++)
+            for(int j = 0; j<N;j++)
+                cin>>table[i][j];
+    }
 
 };
 
@@ -63,11 +142,12 @@ void MiniMaxDecision(Table &state)
         {
             for(int j = 0; j<N; j++)
             {
-                if(state[i][j] == '*')
+                if(state.getCell(i,j) == '*')
                 {
-                    state[i][j] = 'x';
-                    int score = minimax(state, 0, true);
-                    state[i][j] = '*'
+                    state.setCell(i,j,'x');
+                    int score = 0;
+                    //int score = minimax(state, 0, true);
+                    state.setCell(i,j,'*');
                     if(score >bestScore)
                     {
                         bestScore = score;
@@ -79,9 +159,9 @@ void MiniMaxDecision(Table &state)
             }
 
         }
-        state[bestMove.first][bestMove.second] = 'x';
+        state.setCell(bestMove.first,bestMove.second,'x');
     }
-    else if(x=='o') //AI is minimizer
+    else if(c=='o') //AI is minimizer
     {
 
     }
@@ -116,7 +196,13 @@ void solve()
 
 int main()
 {
-    solve();
+    N=3;
+    Table t;
+    t.init();
+    t.print();
+    cout<<t.checkForWinner();
+    //solve();
+
 
     return 0;
 }
