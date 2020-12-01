@@ -9,7 +9,7 @@ char c;//if c=='x', player is first, if c=='o', AI is first
 struct Table
 {
 private:
-    char table[10][10]; //a table NxN filled with 0
+    char table[10][10];
 public:
 
     Table()
@@ -165,8 +165,6 @@ public:
 
 int minimax(Table& state,bool isMaximizer, int alpha, int beta)
 {
-    //if(checkWhoWins)
-    //return -1,0 or +1;
     int result = state.checkForWinner();
     if(result == 1 || result == -1) return result;
     if(state.isFull()) return 0;
@@ -317,8 +315,6 @@ void solve()
 
 int main()
 {
-    N=3;
     solve();
-
     return 0;
 }
