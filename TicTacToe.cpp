@@ -9,21 +9,14 @@ char c;//if c=='x', player is first, if c=='o', AI is first
 struct Table
 {
 private:
-    char** table; //a table NxN filled with 0
+    char table[10][10]; //a table NxN filled with 0
 public:
 
     Table()
     {
-        table = new char*[N];
-        for(int i = 0; i<N; i++)
-        {
-            table[i] = new char[N];
-        }
-
         for(int i= 0; i<N; i++)
             for(int j=0; j<N; j++)
                 table[i][j] = '*';
-
     }
 
     char getCell(int i, int j)
@@ -214,7 +207,6 @@ int minimax(Table& state,bool isMaximizer, int alpha, int beta)
                 {
                     state.setCell(i,j,'o');
                     int score = minimax(state,true, alpha, beta);
-                    //int score = minimax(state, 0, false);
                     state.setCell(i,j,'*');
                     if(score < bestScore)
                     {
