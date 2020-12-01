@@ -170,7 +170,7 @@ public:
 };
 
 
-int minimax(Table& state,bool isMaximizer)
+int minimax(Table& state,bool isMaximizer, int alpha, int beta)
 {
     //if(checkWhoWins)
     //return -1,0 or +1;
@@ -188,12 +188,14 @@ int minimax(Table& state,bool isMaximizer)
                 if(state.getCell(i,j) == '*')
                 {
                     state.setCell(i,j,'x');
-                    int score = minimax(state,false);
+                    int score = minimax(state,false, alpha, beta);
                     state.setCell(i,j,'*');
-                    if(score >bestScore)
+                    if(score > bestScore)
                     {
                         bestScore = score;
                     }
+                    if(bestScore >= beta) return bestScore;
+                    alpha = max(alpha, bestScore);
                 }
             }
 
@@ -211,13 +213,15 @@ int minimax(Table& state,bool isMaximizer)
                 if(state.getCell(i,j) == '*')
                 {
                     state.setCell(i,j,'o');
-                    int score = minimax(state,true);
+                    int score = minimax(state,true, alpha, beta);
                     //int score = minimax(state, 0, false);
                     state.setCell(i,j,'*');
                     if(score < bestScore)
                     {
                         bestScore = score;
                     }
+                    if(bestScore <= alpha) return bestScore;
+                    beta = min(beta, bestScore);
                 }
             }
 
@@ -242,7 +246,7 @@ void MiniMaxDecision(Table &state)
                 if(state.getCell(i,j) == '*')
                 {
                     state.setCell(i,j,'x');
-                    int score = minimax(state, false);
+                    int score = minimax(state, false, -100, 100);
                     state.setCell(i,j,'*');
                     if(score >bestScore)
                     {
@@ -269,7 +273,7 @@ void MiniMaxDecision(Table &state)
                 if(state.getCell(i,j) == '*')
                 {
                     state.setCell(i,j,'o');
-                    int score = minimax(state, true);
+                    int score = minimax(state, true,-100,100);
                     state.setCell(i,j,'*');
                     if(score < bestScore)
                     {
