@@ -308,8 +308,10 @@ void solve()
        winner = t.checkForWinner();
        if(winner != 0) break;
     }
+    cout<<endl;
     if(winner == 1) cout<<"X won!"<<endl;
     if(winner == -1) cout<<"O won!"<<endl;
+    if(winner == 0) cout<<"Tie!"<<endl;
 }
 
 
